@@ -21,40 +21,72 @@ create_exception!(gamedig, HostLookupError, GameDigError);
 
 pub fn gd_error_to_py_err(err: GDError) -> PyErr {
     match err.kind {
-        GDErrorKind::PacketOverflow => {
-            PacketOverflowError::new_err("The received packet was bigger than the buffer size.")
-        }
-        GDErrorKind::PacketUnderflow => {
-            PacketUnderflowError::new_err("The received packet was shorter than the expected one.")
-        }
-        GDErrorKind::PacketBad => {
-            PacketBadError::new_err("The received packet is badly formatted.")
-        }
-        GDErrorKind::PacketSend => PacketSendError::new_err("Couldn't send the packet."),
-        GDErrorKind::PacketReceive => PacketReceiveError::new_err("Couldn't receive data."),
-        GDErrorKind::Decompress => DigDecompressError::new_err("Couldn't decompress data."),
-        GDErrorKind::SocketConnect => {
-            DigSocketConnectError::new_err("Couldn't create a socket connection.")
-        }
-        GDErrorKind::SocketBind => SocketBindError::new_err("Couldn't bind a socket."),
+        GDErrorKind::PacketOverflow => PacketOverflowError::new_err(match err.source {
+            None => "The received packet was bigger than the buffer size.".to_string(),
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::PacketUnderflow => PacketUnderflowError::new_err(match err.source {
+            None => "The received packet was shorter than the expected one.".to_string(),
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::PacketBad => PacketBadError::new_err(match err.source {
+            None => "The received packet is badly formatted.".to_string(),
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::PacketSend => PacketSendError::new_err(match err.source {
+            None => "Couldn't send the packet.".to_string(),
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::PacketReceive => PacketReceiveError::new_err(match err.source {
+            None => "Couldn't receive data.".to_string(),
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::Decompress => DigDecompressError::new_err(match err.source {
+            None => "Couldn't decompress data.".to_string(),
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::SocketConnect => DigSocketConnectError::new_err(match err.source {
+            None => "Couldn't create a socket connection.".to_string(),
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::SocketBind => SocketBindError::new_err(match err.source {
+            None => "Couldn't bind a socket.".to_string(),
+            Some(source) => source.to_string(),
+        }),
         GDErrorKind::InvalidInput => InvalidInputError::new_err(match err.source {
             None => "Invalid input into the library".to_string(),
             Some(source) => source.to_string(),
         }),
-        GDErrorKind::BadGame => BadGameError::new_err(
-            "The server response indicated that it is a different game than the game queried.",
-        ),
-        GDErrorKind::AutoQuery => {
-            AutoQueryError::new_err("None of the attempted protocols were successful.")
-        }
-        GDErrorKind::ProtocolFormat => {
-            ProtocolFormatError::new_err("A protocol-defined expected format was not met.")
-        }
-        GDErrorKind::UnknownEnumCast => {
-            UnknownEnumCastError::new_err("Couldn't cast a value to an enum.")
-        }
-        GDErrorKind::JsonParse => JsonParseError::new_err("Couldn't parse a json string."),
-        GDErrorKind::TypeParse => TypeParseError::new_err("Couldn't parse a value."),
-        GDErrorKind::HostLookup => HostLookupError::new_err("Couldn't find the host specified."),
+        GDErrorKind::BadGame => BadGameError::new_err(match err.source {
+            None => {
+                "The server response indicated that it is a different game than the game queried."
+                    .to_string()
+            }
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::AutoQuery => AutoQueryError::new_err(match err.source {
+            None => "None of the attempted protocols were successful.".to_string(),
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::ProtocolFormat => ProtocolFormatError::new_err(match err.source {
+            None => "A protocol-defined expected format was not met.".to_string(),
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::UnknownEnumCast => UnknownEnumCastError::new_err(match err.source {
+            None => "Couldn't cast a value to an enum.".to_string(),
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::JsonParse => JsonParseError::new_err(match err.source {
+            None => "Couldn't parse a json string.".to_string(),
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::TypeParse => TypeParseError::new_err(match err.source {
+            None => "Couldn't parse a value.".to_string(),
+            Some(source) => source.to_string(),
+        }),
+        GDErrorKind::HostLookup => HostLookupError::new_err(match err.source {
+            None => "Couldn't find the host specified.".to_string(),
+            Some(source) => source.to_string(),
+        }),
     }
 }
