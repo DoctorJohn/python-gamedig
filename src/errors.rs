@@ -37,7 +37,10 @@ pub fn gd_error_to_py_err(err: GDError) -> PyErr {
             DigSocketConnectError::new_err("Couldn't create a socket connection.")
         }
         GDErrorKind::SocketBind => SocketBindError::new_err("Couldn't bind a socket."),
-        GDErrorKind::InvalidInput => InvalidInputError::new_err("Invalid input to the library."),
+        GDErrorKind::InvalidInput => InvalidInputError::new_err(match err.source {
+            None => "Invalid input into the library".to_string(),
+            Some(source) => source.to_string(),
+        }),
         GDErrorKind::BadGame => BadGameError::new_err(
             "The server response indicated that it is a different game than the game queried.",
         ),

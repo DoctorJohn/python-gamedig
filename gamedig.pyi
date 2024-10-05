@@ -1,6 +1,17 @@
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, TypedDict, NotRequired
 
-def query(game_id: str, address: str, port: Optional[int] = None) -> Dict[str, Any]: ...
+class TimeoutSettings(TypedDict):
+    retries: int
+    read: NotRequired[int]
+    write: NotRequired[int]
+    connect: NotRequired[int]
+
+def query(
+    game_id: str,
+    address: str,
+    port: Optional[int] = None,
+    timeout_settings: Optional[TimeoutSettings] = None,
+) -> Dict[str, Any]: ...
 
 class GameDigError(Exception): ...
 class PacketOverflowError(GameDigError): ...
