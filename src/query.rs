@@ -1,17 +1,18 @@
 use crate::errors::*;
 use gamedig::{self as rust_gamedig, TimeoutSettings};
-use pyo3::{exceptions::PyValueError, prelude::*};
-use serde_pyobject::to_pyobject;
+use pyo3::{exceptions::PyValueError, prelude::*, types::PyDict};
+use serde_pyobject::{from_pyobject, to_pyobject};
 use std::collections::HashMap;
 
 #[pyfunction]
-#[pyo3(signature = (game_id, address, port=None, timeout_settings=None))]
+#[pyo3(signature = (game_id, address, port=None, timeout_settings=None, extra_settings=None))]
 pub fn query(
     py: Python,
     game_id: &str,
     address: &str,
     port: Option<u16>,
     timeout_settings: Option<HashMap<String, u16>>,
+    extra_settings: Option<&Bound<'_, PyDict>>,
 ) -> PyResult<PyObject> {
     let game = match rust_gamedig::GAMES.get(game_id) {
         None => return Err(PyValueError::new_err(format!("Unknown game id: {game_id}"))),
@@ -47,7 +48,21 @@ pub fn query(
         }
     };
 
-    match rust_gamedig::query_with_timeout(game, &parsed_address, port, parsed_timeout_settings) {
+    let parsed_extra_settings = match extra_settings {
+        None => None,
+        Some(extra_settings) => match from_pyobject(extra_settings.clone()) {
+            Ok(parsed) => Some(parsed),
+            Err(err) => return Err(err.into()),
+        },
+    };
+
+    match rust_gamedig::query_with_timeout_and_extra_settings(
+        game,
+        &parsed_address,
+        port,
+        parsed_timeout_settings,
+        parsed_extra_settings,
+    ) {
         Err(err) => return Err(gd_error_to_py_err(err)),
         Ok(response) => {
             let response_json = response.as_json();
