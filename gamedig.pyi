@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional, TypedDict, NotRequired
+from typing import Any, Dict, Optional, TypedDict, NotRequired, TypeAlias, Literal
 
 class TimeoutSettings(TypedDict):
     retries: int
@@ -6,11 +6,21 @@ class TimeoutSettings(TypedDict):
     write: NotRequired[int]
     connect: NotRequired[int]
 
+GatherToggle: TypeAlias = Literal["Skip", "Try", "Enforce"]
+
+class ExtraRequestSettings(TypedDict):
+    hostname: NotRequired[str]
+    protocol_version: NotRequired[int]
+    gather_players: NotRequired[GatherToggle]
+    gather_rules: NotRequired[GatherToggle]
+    check_app_id: NotRequired[bool]
+
 def query(
     game_id: str,
     address: str,
     port: Optional[int] = None,
     timeout_settings: Optional[TimeoutSettings] = None,
+    extra_settings: Optional[ExtraRequestSettings] = None,
 ) -> Dict[str, Any]: ...
 
 class GameDigError(Exception): ...
