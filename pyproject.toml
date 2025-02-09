@@ -4,7 +4,7 @@ description = "Unofficial high-level Python bindings for the Rust gamedig crate"
 authors = [{name = "Jonathan Ehwald", email = "github@ehwald.info"}]
 license = "MIT"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
 classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
