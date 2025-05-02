@@ -67,7 +67,7 @@ pub fn query(
         Ok(response) => {
             let response_json = response.as_json();
             let py_response = to_pyobject(py, &response_json).unwrap();
-            Ok(py_response.into_py(py))
+            Ok(py_response.into())
         }
     }
 }
