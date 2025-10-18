@@ -28,11 +28,11 @@ repository = "https://github.com/DoctorJohn/python-gamedig"
 documentation = "https://github.com/DoctorJohn/python-gamedig"
 
 [build-system]
-requires = ["maturin>=1.7,<2.0"]
+requires = ["maturin>=1.9.6,<2.0"]
 build-backend = "maturin"
 
 [dependency-groups]
-dev = ["pytest>=8.3.3", "ruff>=0.6.9"]
+dev = ["maturin>=1.9.6", "pytest>=8.3.3", "ruff>=0.6.9"]
 
 [tool.maturin]
 features = ["pyo3/extension-module"]
