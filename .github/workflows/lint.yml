@@ -20,4 +20,4 @@ jobs:
       - name: Run tests
         run: |
             uv run ruff check tests
-            uv run ruff format --check tests
+            uv run ruff format --diff tests
