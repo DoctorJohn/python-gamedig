@@ -9,6 +9,6 @@ name = "gamedig"
 crate-type = ["cdylib"]
 
 [dependencies]
-gamedig = { version = "0.7.0", features = ["serde", "tls"] }
+gamedig = { version = "0.8.0", features = ["serde", "tls"] }
 pyo3 = "0.26.0"
 serde-pyobject = "0.7.0"
