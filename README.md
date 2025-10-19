@@ -37,10 +37,7 @@ print(response)
 
 ## Development
 
-1. Clone the repository and change into its directory
-2. Create a virtual environment: `uv venv --seed`
-3. Install dev dependencies: `uv sync --only-dev`
-4. Activate the virtual environment: `source .venv/bin/activate`
-5. Make changes to the code and tests
-6. Build the package: `maturin develop`
-7. Run the tests: `pytest`
+1. Install dependencies into a virtual env: `uv sync`
+2. Make changes to the code and tests
+3. Build the package: `uv run maturin develop`
+4. Run the tests: `uv run pytest`
