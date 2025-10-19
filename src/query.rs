@@ -13,7 +13,7 @@ pub fn query(
     port: Option<u16>,
     timeout_settings: Option<HashMap<String, u16>>,
     extra_settings: Option<&Bound<'_, PyDict>>,
-) -> PyResult<PyObject> {
+) -> PyResult<Py<PyAny>> {
     let game = match rust_gamedig::GAMES.get(game_id) {
         None => return Err(PyValueError::new_err(format!("Unknown game id: {game_id}"))),
         Some(game) => game,
