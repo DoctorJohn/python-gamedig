@@ -1,4 +1,4 @@
-from typing import Any, Dict, Literal, NotRequired, Optional, TypeAlias, TypedDict
+from typing import Any, Literal, NotRequired, TypeAlias, TypedDict
 
 class TimeoutSettings(TypedDict):
     retries: int
@@ -18,10 +18,10 @@ class ExtraRequestSettings(TypedDict):
 def query(
     game_id: str,
     address: str,
-    port: Optional[int] = None,
-    timeout_settings: Optional[TimeoutSettings] = None,
-    extra_settings: Optional[ExtraRequestSettings] = None,
-) -> Dict[str, Any]: ...
+    port: int | None = None,
+    timeout_settings: TimeoutSettings | None = None,
+    extra_settings: ExtraRequestSettings | None = None,
+) -> dict[str, Any]: ...
 
 class GameDigError(Exception): ...
 class PacketOverflowError(GameDigError): ...

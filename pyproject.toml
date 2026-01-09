@@ -43,4 +43,4 @@ dev = ["maturin>=1.9.6", "pytest>=8.3.3", "ruff>=0.6.9"]
 features = ["pyo3/extension-module"]
 
 [tool.ruff.lint]
-extend-select = ["I"]
+extend-select = ["I", "UP"]
