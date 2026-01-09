@@ -1,5 +1,6 @@
-import gamedig
 import pytest
+
+import gamedig
 
 
 @pytest.mark.parametrize("invalid_game_id", ["", "not-a-game-id"])

@@ -1,4 +1,4 @@
-from typing import Any, Dict, Optional, TypedDict, NotRequired, TypeAlias, Literal
+from typing import Any, Dict, Literal, NotRequired, Optional, TypeAlias, TypedDict
 
 class TimeoutSettings(TypedDict):
     retries: int
