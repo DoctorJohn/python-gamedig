@@ -10,7 +10,7 @@
 [pypi-image]: https://img.shields.io/pypi/v/gamedig
 [pypi-url]: https://pypi.org/project/gamedig/
 [downloads-image]: https://img.shields.io/pypi/dm/gamedig
-[downloads-url]: https://pypi.org/project/gamedig/
+[downloads-url]: https://pypistats.org/packages/gamedig
 [license-image]: https://img.shields.io/pypi/l/gamedig
 [license-url]: https://github.com/DoctorJohn/python-gamedig/blob/main/LICENSE
 
