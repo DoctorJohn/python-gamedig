@@ -1,6 +1,7 @@
 import socket
 import subprocess
 import sys
+from contextlib import nullcontext
 
 import pytest
 
@@ -79,3 +80,32 @@ def test_query_raises_for_auto_query_errors():
 def test_query_raises_for_packet_errors():
     with pytest.raises(gamedig.PacketReceiveError):
         gamedig.query("csgo", "127.0.0.1")
+
+
+@pytest.mark.parametrize(
+    ("extra_settings", "expectation"),
+    [
+        pytest.param(None, nullcontext(), id="omitted"),
+        pytest.param({}, nullcontext(), id="empty"),
+        pytest.param({"gather_players": "Try"}, nullcontext(), id="partial"),
+        pytest.param(
+            {"check_app_id": True},
+            pytest.raises(gamedig.BadGameError, match="AppId: 0"),
+            id="overridden",
+        ),
+    ],
+)
+def test_query_merges_extra_settings_with_game_defaults(
+    valve_server_port, extra_settings, expectation
+):
+    """
+    Our test server reports app id 0. A query checking the app id would fail.
+    Starbound's defaults skip the app id check, allowing the query to succeed.
+    """
+    with expectation:
+        gamedig.query(
+            "starbound",
+            "127.0.0.1",
+            valve_server_port,
+            extra_settings=extra_settings,
+        )

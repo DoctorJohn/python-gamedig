@@ -1,5 +1,7 @@
 use crate::errors::*;
-use gamedig::{self as rust_gamedig, TimeoutSettings};
+use gamedig::{
+    self as rust_gamedig, protocols::Protocol, ExtraRequestSettings, Game, TimeoutSettings,
+};
 use pyo3::{exceptions::PyValueError, prelude::*, types::PyDict};
 use serde_pyobject::{from_pyobject, to_pyobject};
 use std::collections::HashMap;
@@ -56,7 +58,7 @@ pub fn query(
     let parsed_extra_settings = match extra_settings {
         None => None,
         Some(extra_settings) => match from_pyobject(extra_settings.clone()) {
-            Ok(parsed) => Some(parsed),
+            Ok(parsed) => Some(with_game_defaults(parsed, game)),
             Err(err) => return Err(err.into()),
         },
     };
@@ -74,5 +76,23 @@ pub fn query(
             let py_response = to_pyobject(py, &response_json).unwrap();
             Ok(py_response.into())
         }
+    }
+}
+
+/// Fills in the settings omitted by the user with the game's own defaults.
+/// gamedig would otherwise ignore the game's defaults as soon as any settings are passed.
+fn with_game_defaults(settings: ExtraRequestSettings, game: &Game) -> ExtraRequestSettings {
+    // gamedig only uses game defaults for Valve games, other protocols have their own defaults
+    if !matches!(game.protocol, Protocol::Valve(_)) {
+        return settings;
+    }
+
+    let defaults = &game.request_settings;
+    ExtraRequestSettings {
+        hostname: settings.hostname.or_else(|| defaults.hostname.clone()),
+        protocol_version: settings.protocol_version.or(defaults.protocol_version),
+        gather_players: settings.gather_players.or(defaults.gather_players),
+        gather_rules: settings.gather_rules.or(defaults.gather_rules),
+        check_app_id: settings.check_app_id.or(defaults.check_app_id),
     }
 }
