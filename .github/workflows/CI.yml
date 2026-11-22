@@ -24,25 +24,25 @@ jobs:
     strategy:
       matrix:
         platform:
-          - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
             target: x86_64
             manylinux: auto
-          - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
             target: x86
             manylinux: auto
-          - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
             target: aarch64
             manylinux: manylinux_2_28
-          - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
             target: armv7
             manylinux: auto
-          - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
             target: s390x
             manylinux: auto
-          - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
             target: ppc64le
             manylinux: auto
-          - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
             target: riscv64
             manylinux: auto
     steps:
@@ -75,13 +75,13 @@ jobs:
     strategy:
       matrix:
         platform:
-          - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
             target: x86_64
-          - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
             target: x86
-          - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
             target: aarch64
-          - runner: ubuntu-22.04
+          - runner: ubuntu-24.04
             target: armv7
     steps:
       - uses: actions/checkout@v7.0.1
