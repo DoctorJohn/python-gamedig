@@ -1,7 +1,7 @@
 from typing import Any, Literal, NotRequired, TypeAlias, TypedDict
 
 class TimeoutSettings(TypedDict):
-    retries: int
+    retries: NotRequired[int]
     read: NotRequired[int]
     write: NotRequired[int]
     connect: NotRequired[int]

@@ -27,19 +27,24 @@ pub fn query(
     let parsed_timeout_settings = match timeout_settings {
         None => None,
         Some(timeout_settings) => {
+            // Omitted settings must not be passed as None, gamedig would block indefinitely
+            let defaults = TimeoutSettings::default();
             let connect_timeout = timeout_settings
                 .get("connect")
-                .map(|&x| std::time::Duration::from_secs(x as u64));
+                .map(|&x| std::time::Duration::from_secs(x as u64))
+                .or(defaults.get_connect());
             let read_timeout = timeout_settings
                 .get("read")
-                .map(|&x| std::time::Duration::from_secs(x as u64));
+                .map(|&x| std::time::Duration::from_secs(x as u64))
+                .or(defaults.get_read());
             let write_timeout = timeout_settings
                 .get("write")
-                .map(|&x| std::time::Duration::from_secs(x as u64));
+                .map(|&x| std::time::Duration::from_secs(x as u64))
+                .or(defaults.get_write());
             let retries = timeout_settings
                 .get("retries")
                 .map(|&x| x as usize)
-                .unwrap();
+                .unwrap_or(defaults.get_retries());
 
             match TimeoutSettings::new(read_timeout, write_timeout, connect_timeout, retries) {
                 Err(err) => return Err(gd_error_to_py_err(err)),
