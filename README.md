@@ -28,9 +28,9 @@ pip install gamedig
 from socket import gethostbyname
 from gamedig import query
 
-ip_address = gethostbyname('minecraftonline.com')
+ip_address = gethostbyname("minecraftonline.com")
 
-response = query('minecraft', ip_address)
+response = query("minecraft", ip_address)
 
 print(response)
 ```
