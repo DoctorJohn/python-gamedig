@@ -217,5 +217,7 @@ jobs:
         uses: astral-sh/setup-uv@v10.4.0
         with:
           enable-cache: false
+      - name: Attest
+        run: uvx --from pypi-attestations==0.0.31 python -m pypi_attestations sign wheels-*/*
       - name: Publish
         run: uv publish --trusted-publishing always 'wheels-*/*'
