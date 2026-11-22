@@ -1,3 +1,7 @@
+import socket
+import subprocess
+import sys
+
 import pytest
 
 import gamedig
@@ -42,6 +46,29 @@ def test_query_write_timeout_duration_must_not_be_0():
             "127.0.0.1",
             timeout_settings={"retries": 0, "write": 0},
         )
+
+
+def test_query_timeout_settings_retries_are_optional():
+    with pytest.raises(gamedig.PacketReceiveError):
+        gamedig.query("csgo", "127.0.0.1", timeout_settings={"read": 1})
+
+
+def test_query_uses_default_timeouts_for_omitted_timeout_settings():
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as silent_server:
+        silent_server.bind(("127.0.0.1", 0))
+        port = silent_server.getsockname()[1]
+        code = f"import gamedig; gamedig.query('csgo', '127.0.0.1', {port}, {{'retries': 0}})"
+
+        # A hanging query can't be interrupted from within the same process
+        result = subprocess.run(
+            [sys.executable, "-c", code],
+            capture_output=True,
+            check=False,
+            text=True,
+            timeout=15,
+        )
+
+    assert "gamedig.PacketReceiveError" in result.stderr
 
 
 def test_query_raises_for_auto_query_errors():
