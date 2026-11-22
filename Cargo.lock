@@ -120,9 +120,9 @@ dependencies = [
 
 [[package]]
 name = "gamedig"
-version = "0.8.0"
+version = "0.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fb0ec82e88fa1bf33ccbe602c0aaa648302d21061a0afaa001bb14d03f1a743c"
+checksum = "d451c96ec779b50a93ce6b67bfd25f4715d7cbfbc17dda590f24dabc62c3fb17"
 dependencies = [
  "base64",
  "byteorder",
